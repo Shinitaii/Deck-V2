@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deck/backend/auth/auth_service.dart';
+import 'package:deck/pages/task/task_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:deck/pages/misc/colors.dart';
 import 'package:deck/pages/misc/widget_method.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../backend/task/task_provider.dart';
@@ -19,6 +21,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  late final String _selectedPriority = "Low";
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -143,6 +146,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text("Select a priority level:", style: GoogleFonts.nunito(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    BuildDropdownButton(selectedPriority: _selectedPriority),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
                 child: BuildButton(
                     buttonText: "Save",
                     height: 50,
@@ -181,6 +198,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         "user_id": AuthService().getCurrentUser()?.uid,
                         "title": _titleController.text,
                         "description" : _descriptionController.text,
+                        "priority": _selectedPriority,
                         "set_date": DateTime.now(),
                         "end_date": DateTime.parse(_dateController.text).add(const Duration(hours: 23, minutes: 59, seconds: 59)),
                         "is_done": false,

@@ -1806,8 +1806,7 @@ class DeckDelegate extends SliverPersistentHeaderDelegate {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            width: 300,
+          Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -1818,7 +1817,6 @@ class DeckDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          Spacer(),
           if (hasIcon)
             BuildIconButton(
               onPressed: onPressed,
